@@ -31,7 +31,7 @@ typedef void (^VoidBlock) (void);
 @property (nonatomic, strong) id avTimeObserver;
 @property (nonatomic, strong) LLVideoPlayerCacheLoader *resourceLoader;
 @property (nonatomic, strong) NSMutableSet *failingURLs;
-@property (nonatomic, assign) NSInteger lastFrameTime;
+@property (nonatomic, assign) float lastFrameTime;
 
 @end
 
@@ -402,7 +402,7 @@ typedef void (^VoidBlock) (void);
             __weak __typeof(self) weakSelf = self;
             avPlayer.volume = [AVAudioSession sharedInstance].outputVolume;
             [avPlayer addObserver:self forKeyPath:@"status" options:0 context:nil];
-            self.avTimeObserver = [avPlayer addPeriodicTimeObserverForInterval:CMTimeMake(1, 1) queue:NULL usingBlock:^(CMTime time) {
+            self.avTimeObserver = [avPlayer addPeriodicTimeObserverForInterval:CMTimeMake(1, 30) queue:NULL usingBlock:^(CMTime time) {
                 [weakSelf periodicTimeObserver:time];
             }];
         }
@@ -595,7 +595,7 @@ typedef void (^VoidBlock) (void);
 {
     NSTimeInterval timeInSeconds = CMTimeGetSeconds(time);
     
-    if (timeInSeconds <= 0) {
+    if (timeInSeconds < 0) {
         return;
     }
     
@@ -611,11 +611,7 @@ typedef void (^VoidBlock) (void);
         return;
     }
     
-    NSInteger thisSecond = (NSInteger)(timeInSeconds + 0.5f);
-    if (thisSecond == self.lastFrameTime) {
-        return;
-    }
-    self.lastFrameTime = thisSecond;
+    self.lastFrameTime = timeInSeconds;
     
     if ([self.delegate respondsToSelector:@selector(videoPlayer:didPlayFrame:)]) {
         [self.delegate videoPlayer:self didPlayFrame:timeInSeconds];
