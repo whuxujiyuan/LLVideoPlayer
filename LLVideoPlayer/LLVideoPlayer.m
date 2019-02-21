@@ -266,7 +266,12 @@ typedef void (^VoidBlock) (void);
 - (void)seekToLastWatchedDuration:(void (^)(BOOL finished))completionHandler;
 {
     ll_run_on_ui_thread(^{
-        float lastWatchedTime = [self.track.lastWatchedDuration floatValue];
+        
+        float lastWatchedTime = 0;
+        if ([self.delegate respondsToSelector:@selector(videoPlayerShouldSeekToDuration:)]) {
+            lastWatchedTime = [self.delegate videoPlayerShouldSeekToDuration:self];
+        }
+
         if (lastWatchedTime > 0) {
             if ([self.delegate respondsToSelector:@selector(videoPlayerWillContinuePlaying:)]) {
                 [self.delegate videoPlayerWillContinuePlaying:self];

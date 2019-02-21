@@ -26,6 +26,7 @@
 - (BOOL)shouldVideoPlayerStartVideo:(LLVideoPlayer *)videoPlayer;
 - (void)videoPlayerWillStartVideo:(LLVideoPlayer *)videoPlayer;
 - (void)videoPlayerDidStartVideo:(LLVideoPlayer *)videoPlayer;
+- (float)videoPlayerShouldSeekToDuration:(LLVideoPlayer *)videoPlayer;
 - (void)videoPlayer:(LLVideoPlayer *)videoPlayer didPlayFrame:(NSTimeInterval)time;
 - (void)videoPlayerDidPlayToEnd:(LLVideoPlayer *)videoPlayer;
 - (void)videoPlayer:(LLVideoPlayer *)videoPlayer loadedTimeRanges:(NSArray<NSValue *> *)ranges;
