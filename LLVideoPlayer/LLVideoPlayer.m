@@ -632,15 +632,15 @@ typedef void (^VoidBlock) (void);
     // is current player's item
     ll_run_on_ui_thread(^{
         
-        [self seekToTimeInSecond:0 userAction:NO completionHandler:nil];
-
-        if ([self.delegate respondsToSelector:@selector(videoPlayerShouldReplayOnEnd:)]) {
-            if ([self.delegate videoPlayerShouldReplayOnEnd:self]) {
-                [self.avPlayer play];
-                return;
-            }
-        }
-        [self pauseContent];
+        [self pauseContentWithCompletionHandler:^{
+            [self seekToTimeInSecond:0 userAction:NO completionHandler:^(BOOL finished) {
+                if ([self.delegate respondsToSelector:@selector(videoPlayerShouldReplayOnEnd:)]) {
+                    if ([self.delegate videoPlayerShouldReplayOnEnd:self]) {
+                        [self.avPlayer play];
+                    }
+                }
+            }];
+        }];
     });
 }
 
