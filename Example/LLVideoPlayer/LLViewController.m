@@ -10,7 +10,7 @@
 #import "LLVideoPlayer.h"
 #import "Masonry.h"
 
-#define kTestVideoURL [NSURL URLWithString:@"https://video.wefaceapp.com/video/disucss/2019/2/20/dPwiZBGVm0j0yB0eQ5oJ6A/sd/149555D1-48EA-4D66-BADB-3E2EEFD22741.mp4"]
+#define kTestVideoURL [NSURL URLWithString:@"https://video.wefaceapp.com/video/disucss/2019/2/14/KLH2EdB8D5D0EDpG4XaOv/sd/7A65028A-81C3-455F-9FC0-AF9320D58772.mp4"]
 
 @interface LLViewController () <LLVideoPlayerDelegate>
 
