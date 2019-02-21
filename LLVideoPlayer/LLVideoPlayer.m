@@ -636,12 +636,12 @@ typedef void (^VoidBlock) (void);
             if ([self.delegate videoPlayerShouldReplayOnEnd:self]) {
                 [self seekToTimeInSecond:0 userAction:NO completionHandler:nil];
 
-//                if ([self.delegate respondsToSelector:@selector(videoPlayerShouldPauseOnReplay:)]) {
-//                    if ([self.delegate videoPlayerShouldPauseOnReplay:self]) {
-//                        [self pauseContent];
-//                        return;
-//                    }
-//                }
+                if ([self.delegate respondsToSelector:@selector(videoPlayerShouldPauseOnReplay:)]) {
+                    if ([self.delegate videoPlayerShouldPauseOnReplay:self]) {
+                        [self pauseContent];
+                        return;
+                    }
+                }
                 [self.avPlayer play];
                 return;
             }
