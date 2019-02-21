@@ -10,7 +10,7 @@
 #import "LLVideoPlayer.h"
 #import "Masonry.h"
 
-#define kTestVideoURL [NSURL URLWithString:@"https://www.example.com/foo.mp4"]
+#define kTestVideoURL [NSURL URLWithString:@"https://video.wefaceapp.com/video/disucss/2019/2/20/dPwiZBGVm0j0yB0eQ5oJ6A/sd/149555D1-48EA-4D66-BADB-3E2EEFD22741.mp4"]
 
 @interface LLViewController () <LLVideoPlayerDelegate>
 
@@ -268,6 +268,14 @@
 - (void)videoPlayer:(LLVideoPlayer *)videoPlayer durationDidLoad:(NSNumber *)duration
 {
     NSLog(@"durationDidLoad: %@", duration);
+}
+
+- (BOOL)videoPlayerShouldReplayOnEnd:(LLVideoPlayer *)videoPlayer {
+    return YES;
+}
+
+- (BOOL)videoPlayerShouldPauseOnReplay:(LLVideoPlayer *)videoPlayer {
+    return YES;
 }
 
 - (void)videoPlayer:(LLVideoPlayer *)videoPlayer didPlayFrame:(NSTimeInterval)time
