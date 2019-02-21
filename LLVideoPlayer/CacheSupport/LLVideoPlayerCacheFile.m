@@ -196,7 +196,7 @@ static int mapfile(const char *filename, void **out_data_ptr, size_t *out_data_l
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         [indexData writeToFile:self.indexFilePath atomically:YES];
-    })
+    });
 }
 
 - (void)addRange:(NSRange)range
