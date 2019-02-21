@@ -341,39 +341,41 @@ typedef void (^VoidBlock) (void);
     static NSString *kPlayableKey = @"playable";
     static NSString *kTracks = @"tracks";
     
-    AVURLAsset *asset;
-    
-    if ([self sessionCacheEnabled]) {
-        asset = [[AVURLAsset alloc] initWithURL:[streamURL ll_customSchemeURL] options:nil];
-        self.resourceLoader = [[LLVideoPlayerCacheLoader alloc] initWithURL:streamURL];
-        [asset.resourceLoader setDelegate:self.resourceLoader queue:dispatch_get_main_queue()];
-    } else {
-        asset = [[AVURLAsset alloc] initWithURL:streamURL options:nil];
-    }
-    self.avPlayerItem = [AVPlayerItem playerItemWithAsset:asset];
-    
-    [asset loadValuesAsynchronouslyForKeys:@[kPlayableKey, kTracks] completionHandler:^{
-        ll_run_on_ui_thread(^{
-            if (NO == [streamURL isEqual:self.track.streamURL]) {
-                NSLog(@"URL dismatch: %@ loaded, but cuurent is %@",streamURL, self.track.streamURL);
-                return;
-            }
-            if (self.state == LLVideoPlayerStateDismissed) {
-                NSLog(@"Asset was dismissed while status %ld", (long)[asset statusOfValueForKey:kPlayableKey error:nil]);
-                return;
-            }
-            NSError *error = nil;
-            AVKeyValueStatus status = [asset statusOfValueForKey:kPlayableKey error:&error];
-            if (status == AVKeyValueStatusLoaded) {
-                NSLog(@"AVURLAsset loaded. [OK]");
-                self.avPlayer = [self playerWithPlayerItem:self.avPlayerItem];
-                [playerLayerView setPlayer:self.avPlayer];
-            } else {
-                NSLog(@"The asset's tracks were not loaded: %@", error);
-                [self handleErrorCode:LLVideoPlayerErrorAssetLoadError track:track error:error];
-            }
-        });
-    }];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        AVURLAsset *asset;
+        
+        if ([self sessionCacheEnabled]) {
+            asset = [[AVURLAsset alloc] initWithURL:[streamURL ll_customSchemeURL] options:nil];
+            self.resourceLoader = [[LLVideoPlayerCacheLoader alloc] initWithURL:streamURL];
+            [asset.resourceLoader setDelegate:self.resourceLoader queue:dispatch_get_main_queue()];
+        } else {
+            asset = [[AVURLAsset alloc] initWithURL:streamURL options:nil];
+        }
+        self.avPlayerItem = [AVPlayerItem playerItemWithAsset:asset];
+        
+        [asset loadValuesAsynchronouslyForKeys:@[kPlayableKey, kTracks] completionHandler:^{
+            ll_run_on_ui_thread(^{
+                if (NO == [streamURL isEqual:self.track.streamURL]) {
+                    NSLog(@"URL dismatch: %@ loaded, but cuurent is %@",streamURL, self.track.streamURL);
+                    return;
+                }
+                if (self.state == LLVideoPlayerStateDismissed) {
+                    NSLog(@"Asset was dismissed while status %ld", (long)[asset statusOfValueForKey:kPlayableKey error:nil]);
+                    return;
+                }
+                NSError *error = nil;
+                AVKeyValueStatus status = [asset statusOfValueForKey:kPlayableKey error:&error];
+                if (status == AVKeyValueStatusLoaded) {
+                    NSLog(@"AVURLAsset loaded. [OK]");
+                    self.avPlayer = [self playerWithPlayerItem:self.avPlayerItem];
+                    [playerLayerView setPlayer:self.avPlayer];
+                } else {
+                    NSLog(@"The asset's tracks were not loaded: %@", error);
+                    [self handleErrorCode:LLVideoPlayerErrorAssetLoadError track:track error:error];
+                }
+            });
+        }];
+    });
 }
 
 - (AVPlayer*)playerWithPlayerItem:(AVPlayerItem *)playerItem
