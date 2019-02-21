@@ -631,6 +631,20 @@ typedef void (^VoidBlock) (void);
     
     // is current player's item
     ll_run_on_ui_thread(^{
+        
+        if ([self.delegate respondsToSelector:@selector(videoPlayerShouldReplayOnEnd:)]) {
+            if ([self.delegate videoPlayerShouldReplayOnEnd:self]) {
+                [self seekToTimeInSecond:0 userAction:NO completionHandler:nil];
+                
+                if ([self.delegate respondsToSelector:@selector(videoPlayerShouldPauseOnReplay:)]) {
+                    if ([self.delegate videoPlayerShouldPauseOnReplay:self]) {
+                        [self pauseContent];
+                    }
+                }
+                return;
+            }
+        }
+
         [self clearPlayer];
         self.track.isPlayedToEnd = YES;
         self.state = LLVideoPlayerStateUnknown;
