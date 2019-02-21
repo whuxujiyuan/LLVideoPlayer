@@ -634,6 +634,10 @@ typedef void (^VoidBlock) (void);
         
         [self pauseContentWithCompletionHandler:^{
             [self seekToTimeInSecond:0 userAction:NO completionHandler:^(BOOL finished) {
+                if ([self.delegate respondsToSelector:@selector(videoPlayer:didPlayFrame:)]) {
+                    [self.delegate videoPlayer:self didPlayFrame:0];
+                }
+
                 if ([self.delegate respondsToSelector:@selector(videoPlayerShouldReplayOnEnd:)]) {
                     if ([self.delegate videoPlayerShouldReplayOnEnd:self]) {
                         [self playContent];

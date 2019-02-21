@@ -18,9 +18,9 @@
 - (void)ll_seekToTimeInSeconds:(float)time accurate:(BOOL)accurate completionHandler:(void (^)(BOOL))completionHandler
 {
     if (accurate) {
-        [self seekToTime:CMTimeMakeWithSeconds((NSInteger)time, 1) toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:completionHandler];
+        [self seekToTime:CMTimeMakeWithSeconds(time, 1) toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:completionHandler];
     } else {
-        [self seekToTime:CMTimeMakeWithSeconds((NSInteger)time, 1) completionHandler:completionHandler];
+        [self seekToTime:CMTimeMakeWithSeconds(time, 1) completionHandler:completionHandler];
     }
 }
 
