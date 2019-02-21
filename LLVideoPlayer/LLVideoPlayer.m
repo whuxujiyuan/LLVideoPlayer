@@ -636,7 +636,7 @@ typedef void (^VoidBlock) (void);
             [self seekToTimeInSecond:0 userAction:NO completionHandler:^(BOOL finished) {
                 if ([self.delegate respondsToSelector:@selector(videoPlayerShouldReplayOnEnd:)]) {
                     if ([self.delegate videoPlayerShouldReplayOnEnd:self]) {
-                        [self.avPlayer play];
+                        [self playContent];
                     }
                 }
             }];

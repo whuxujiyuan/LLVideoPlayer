@@ -156,6 +156,7 @@
     [self.view addSubview:self.player.view];
     self.player.view.frame = CGRectMake(10, 80, 300, 200);
     self.player.delegate = self;
+    self.player.accurateSeek = YES;
     self.player.cacheSupportEnabled = YES;
     LLVideoPlayerCachePolicy *policy = [LLVideoPlayerCachePolicy defaultPolicy];
     self.player.cachePolicy = policy;
@@ -271,7 +272,7 @@
 }
 
 - (BOOL)videoPlayerShouldReplayOnEnd:(LLVideoPlayer *)videoPlayer {
-    return YES;
+    return NO;
 }
 
 - (BOOL)videoPlayerShouldPauseOnReplay:(LLVideoPlayer *)videoPlayer {
