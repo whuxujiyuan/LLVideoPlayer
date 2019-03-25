@@ -28,8 +28,8 @@
 - (void)videoPlayerDidStartVideo:(LLVideoPlayer *)videoPlayer;
 - (float)videoPlayerShouldSeekToDuration:(LLVideoPlayer *)videoPlayer;
 - (void)videoPlayer:(LLVideoPlayer *)videoPlayer didPlayFrame:(NSTimeInterval)time;
-- (BOOL)videoPlayerShouldReplayOnEnd:(LLVideoPlayer *)videoPlayer;
-- (BOOL)videoPlayerShouldPauseOnReplay:(LLVideoPlayer *)videoPlayer;
+- (BOOL)videoPlayerDidFinished:(LLVideoPlayer *)videoPlayer;
+- (BOOL)videoPlayerDidReplay:(LLVideoPlayer *)videoPlayer;
 - (void)videoPlayerDidPlayToEnd:(LLVideoPlayer *)videoPlayer;
 - (void)videoPlayer:(LLVideoPlayer *)videoPlayer loadedTimeRanges:(NSArray<NSValue *> *)ranges;
 - (void)videoPlayerWillContinuePlaying:(LLVideoPlayer *)videoPlayer;

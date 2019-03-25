@@ -639,9 +639,17 @@ typedef void (^VoidBlock) (void);
                     [self.delegate videoPlayer:self didPlayFrame:0];
                 }
 
-                if ([self.delegate respondsToSelector:@selector(videoPlayerShouldReplayOnEnd:)]) {
-                    if ([self.delegate videoPlayerShouldReplayOnEnd:self]) {
+                if (self.loop) {
+                    if (self.pauseOnLoop) {
+                        if ([self.delegate respondsToSelector:@selector(videoPlayerDidFinished:)]) {
+                            [self.delegate videoPlayerDidFinished:self];
+                        }
+                    } else {
                         [self playContent];
+                    }
+                } else {
+                    if ([self.delegate respondsToSelector:@selector(videoPlayerDidReplay:)]) {
+                        [self.delegate videoPlayerDidReplay:self];
                     }
                 }
             }];

@@ -29,6 +29,8 @@
 @property (nonatomic, assign) BOOL cacheSupportEnabled;
 @property (nonatomic, strong) LLVideoPlayerCachePolicy *cachePolicy;
 @property (nonatomic, assign) BOOL accurateSeek;
+@property (nonatomic, assign) BOOL loop;
+@property (nonatomic, assign) BOOL pauseOnLoop;
 
 - (instancetype)initWithVideoPlayerView:(LLVideoPlayerView *)videoPlayerView;
 
