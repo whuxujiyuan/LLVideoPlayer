@@ -640,16 +640,15 @@ typedef void (^VoidBlock) (void);
                 }
 
                 if (self.loop) {
-                    if (self.pauseOnLoop) {
-                        if ([self.delegate respondsToSelector:@selector(videoPlayerDidFinished:)]) {
-                            [self.delegate videoPlayerDidFinished:self];
-                        }
-                    } else {
+                    if (!self.pauseOnLoop) {
                         [self playContent];
+                        if ([self.delegate respondsToSelector:@selector(videoPlayerDidReplay:)]) {
+                            [self.delegate videoPlayerDidReplay:self];
+                        }
                     }
                 } else {
-                    if ([self.delegate respondsToSelector:@selector(videoPlayerDidReplay:)]) {
-                        [self.delegate videoPlayerDidReplay:self];
+                    if ([self.delegate respondsToSelector:@selector(videoPlayerDidFinished:)]) {
+                        [self.delegate videoPlayerDidFinished:self];
                     }
                 }
             }];
